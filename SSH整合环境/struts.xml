@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 实时更新到服务器 -->
+ <constant name="struts.devMode" value="true" />
+	<package name="manager" extends="struts-default" namespace="/manager">
+	<!-- 拦截器 -->
+		<interceptors>
+			<interceptor name="loginStatus" class="interceptors.loginStatusInterceptor"></interceptor>
+			<!-- 拦截栈 -->
+			<interceptor-stack name="iloginStatus">
+				<!-- defaultStack一定要写，不然无法传参数 -->
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="loginStatus" />
+			</interceptor-stack>
+		</interceptors>
+
+
+		<action name="login-check" class="loginAction" method="check">
+			<result>/manager/main/logincheck-success.jsp</result>
+			<result name="error">/manager/main/logincheck-error.jsp</result>
+		</action>
+		<action name="*-*" class="{1}Action" method="{2}" >
+			<!--调用拦截器-->
+			<interceptor-ref name="iloginStatus"></interceptor-ref>
+			<result name="login">/manager/main/login.jsp</result> 
+			
+			<result>/manager/main/{1}{2}-success.jsp</result>
+		</action>
+	</package>
+	
+	<package name="recycler" extends="struts-default" namespace="/recycler">
+		<!-- 拦截器 -->
+		<interceptors>
+			<interceptor name="loginStatus2" class="interceptors.loginStatusInterceptor2"></interceptor>
+			<!-- 拦截栈 -->
+			<interceptor-stack name="iloginStatus2">
+				<!-- defaultStack一定要写，不然无法传参数 -->
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="loginStatus2" />
+			</interceptor-stack>
+		</interceptors>
+		<action name="login-check1" class="loginAction" method="check1">
+			<result>/recycler/main/logincheck-success.jsp</result>
+			<result name="error">/recycler/main/logincheck-error.jsp</result>
+		</action>
+		<action name="*-*" class="{1}Action" method="{2}">
+		<!--调用拦截器-->
+			<interceptor-ref name="iloginStatus2"></interceptor-ref>
+			<result name="login">/recycler/main/login.jsp</result> 
+			
+			<result>/recycler/main/{1}{2}-success.jsp</result>
+		</action>
+	</package>
+	
+	<package name="user" extends="struts-default" namespace="/user">
+		<action name="*-*" class="{1}Action" method="{2}">
+			<result>/User/{1}{2}-success.jsp</result>
+		</action>
+	</package>
+
+</struts>    
