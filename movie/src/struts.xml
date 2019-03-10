@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<!-- 实时更新到服务器 -->
+ <constant name="struts.devMode" value="true" />
+	<package name="movie" extends="json-default">
+		<!-- 拦截器 -->
+		<interceptors>
+			<interceptor name="loginStatus" class="com.jackpon.interceptor.loginStatusInterceptor"></interceptor>
+			<!-- 拦截栈 -->
+			<interceptor-stack name="iloginStatus">
+				<!-- defaultStack一定要写，不然无法传参数 -->
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="loginStatus" />
+			</interceptor-stack>
+		</interceptors>
+		
+	
+ 	   <action name="like-add" class="likeAction" method="add">
+				<result>/WEB-APP/like-success.jsp</result>
+				<!-- 调用拦截器 -->
+				<interceptor-ref name="iloginStatus"></interceptor-ref>
+				<result name="login">/WEB-APP/like-error.jsp</result>
+		</action> 
+		<action name="like-ilist" class="likeAction" method="ilist">
+				<result>/WEB-APP/ilist.jsp</result>
+				<result name="error">/WEB-APP/like-empty.jsp</result>
+		</action>
+		<action name="like-delete" class="likeAction" method="delete">
+				<result type="redirectAction">like-ilist</result>
+		</action>
+		<action name="mListAction-findAll" class="mListAction" method="findAll" >
+			<result name="success" type="json">  
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->  
+                <param name="root">jsonResult</param>  
+                    <!-- 指定是否序列化值为空的属性 -->  
+                <param name="excludeNullProperties">true</param>  
+            </result> 
+		</action>
+		<!-- 通配符匹配action，命名规范要做好才有用，比如页面最好唯一，下面就不是很好 -->
+		<action name="*-*" class="{1}Action" method="{2}">
+			<result>/WEB-APP/{1}-success.jsp</result>
+			<result name="error">/WEB-APP/{1}-error.jsp</result>
+		</action>
+	</package>
+</struts>    
