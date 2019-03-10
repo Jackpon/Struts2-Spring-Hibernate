@@ -3,9 +3,9 @@
 
 - movies 
 关于电影网demo，效果如下
-![image](https://github.com/Jackpon/Struts2-Spring-Hibernate/tree/master/gif/search.gif)
+![image]( https://github.com/Jackpon/Struts2-Spring-Hibernate/tree/master/gif/search.gif )
 
-![image](https://github.com/Jackpon/Struts2-Spring-Hibernate/tree/master/gif/ilike.gif)
+![image]( https://github.com/Jackpon/Struts2-Spring-Hibernate/tree/master/gif/ilike.gif )
 
 - **项目介绍**
  	影视网demo网站，前端布局boostrap+js，后端Struts2+Spring，持久化层Hibernate、数据库mysql+redis；
