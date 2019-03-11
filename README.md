@@ -3,15 +3,6 @@
 
 - movies 
 
----
-title: S2SH框架下搭建影视网demo
-categories: 
-- SSH
-tags:
-- SSH
-updated: 2019-03-11
----
-
 - **目的**
 
 以项目为驱动，学习Struts2+Spring+Hibernate的基本知识点。
