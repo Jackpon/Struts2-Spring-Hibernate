@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd"
+        default-autowire="byName" default-lazy-init="true">
+	
+	<context:annotation-config />
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/> 
+      
+       <!--  最大连接数 -->
+       <property name="maxTotal" value="1000"/>
+      
+      <!--  最大等待连接数量 -->
+      <property name="maxIdle" value="600"/>
+      
+      <!--  最大等待时间，单位毫秒 -->
+      <property name="maxWaitMillis" value="1000"/>
+	</bean>
+	
+	<!-- sessionFactory创建交给spring管理 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+	</bean>
+	
+	<!-- 定义事务管理器 -->
+	<bean id="transactionManager"
+	class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- 开启事务注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 创建HibernateTemplate -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 扫描组件 -->
+	<context:component-scan base-package="com.jackpon.action,com.jackpon.dao"></context:component-scan>
+	
+	<!-- 配置action -->
+	<bean id="likeAction" class="com.jackpon.action.likeAction" scope="prototype"/>
+	<bean id="mListAction" class="com.jackpon.action.mListAction" scope="prototype"/>
+	<bean id="loginAction" class="com.jackpon.action.loginAction" scope="prototype"/>
+	<bean id="registerAction" class="com.jackpon.action.registerAction" scope="prototype"/>
+	<bean id="searchAction" class="com.jackpon.action.searchAction" scope="prototype"/>
+	
+</beans>
